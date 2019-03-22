@@ -31,9 +31,23 @@ public class Player : MonoBehaviour
         {
             Flip(false);
         }
-        _playerAnimation.SideWalk(horizontalInput);
         _rigid.velocity = new Vector2(horizontalInput * speedFactor, verticalInput * speedFactor);
-
+        if(Mathf.Abs(_rigid.velocity.x) > 0)
+        {
+            _playerAnimation.Play("SideWalk");
+        }
+        else if(_rigid.velocity.y > 0)
+        {
+            _playerAnimation.Play("UpwardWalk");
+        }
+        else if(_rigid.velocity.y < 0)
+        {
+            _playerAnimation.Play("DownwardWalk");
+        }
+        else
+        {
+            _playerAnimation.Play("Idle");
+        }
     }
 
     void Flip(bool isHeadingLeft)

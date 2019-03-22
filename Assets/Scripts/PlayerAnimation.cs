@@ -18,8 +18,8 @@ public class PlayerAnimation : MonoBehaviour
         
     }
 
-    public void SideWalk(float move)
+    public void Play(string stateName)
     {
-        _animator.SetFloat("Move", Mathf.Abs(move)); 
+        _animator.Play(stateName);
     }
 }
