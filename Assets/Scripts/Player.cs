@@ -23,14 +23,7 @@ public class Player : MonoBehaviour
     {
         float horizontalInput = Input.GetAxisRaw("Horizontal");
         float verticalInput = Input.GetAxisRaw("Vertical");
-        if (horizontalInput < 0)
-        {
-            Flip(true);
-        }
-        else if (horizontalInput > 0)
-        {
-            Flip(false);
-        }
+        Flip(horizontalInput < 0);
         _rigid.velocity = new Vector2(horizontalInput * speedFactor, verticalInput * speedFactor);
         PlayWalkAnimation(_rigid.velocity);
 
