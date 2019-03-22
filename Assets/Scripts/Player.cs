@@ -10,6 +10,9 @@ public class Player : MonoBehaviour
 
     private float speedFactor = 3.0f;
 
+    //testing section
+    private int count = 1;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -26,6 +29,18 @@ public class Player : MonoBehaviour
         Flip(horizontalInput < 0);
         _rigid.velocity = new Vector2(horizontalInput * speedFactor, verticalInput * speedFactor);
         PlayWalkAnimation(_rigid.velocity);
+        if(Input.GetKeyDown(KeyCode.N))
+        {
+            GameObject gameObject = new GameObject("Test");
+            gameObject.transform.Translate(count, 0, 0);
+            count++;
+            gameObject.AddComponent<SpriteRenderer>();
+            SpriteRenderer sprite = gameObject.GetComponent<SpriteRenderer>();
+            var sp = Resources.Load<Sprite>("characterdemo");
+            Debug.Log(sp);
+            sprite.sprite = sp;
+            sprite.sortingOrder = 10;
+        }
 
     }
 
