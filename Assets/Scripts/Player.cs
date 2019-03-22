@@ -32,15 +32,26 @@ public class Player : MonoBehaviour
             Flip(false);
         }
         _rigid.velocity = new Vector2(horizontalInput * speedFactor, verticalInput * speedFactor);
-        if(Mathf.Abs(_rigid.velocity.x) > 0)
+        PlayWalkAnimation(_rigid.velocity);
+
+    }
+
+    void Flip(bool isHeadingLeft)
+    {
+        _spriteRenderer.flipX = !isHeadingLeft;
+    }
+
+    void PlayWalkAnimation(Vector2 velocity)
+    {
+        if (Mathf.Abs(velocity.x) > 0)
         {
             _playerAnimation.Play("SideWalk");
         }
-        else if(_rigid.velocity.y > 0)
+        else if (velocity.y > 0)
         {
             _playerAnimation.Play("UpwardWalk");
         }
-        else if(_rigid.velocity.y < 0)
+        else if (velocity.y < 0)
         {
             _playerAnimation.Play("DownwardWalk");
         }
@@ -48,10 +59,5 @@ public class Player : MonoBehaviour
         {
             _playerAnimation.Play("Idle");
         }
-    }
-
-    void Flip(bool isHeadingLeft)
-    {
-        _spriteRenderer.flipX = !isHeadingLeft;
     }
 }
