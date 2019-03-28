@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Tilemaps;
 
 public class Player : MonoBehaviour
 {
@@ -10,8 +11,10 @@ public class Player : MonoBehaviour
 
     private float speedFactor = 3.0f;
 
-    //testing section
-    private int count = 1;
+    [SerializeField] private Tilemap _tilemap;
+    private Tile _tileBase;
+    private bool isClickedOnce;
+    private Vector3 newPos;
 
     // Start is called before the first frame update
     void Start()
@@ -19,6 +22,7 @@ public class Player : MonoBehaviour
         _rigid = GetComponent<Rigidbody2D>();
         _playerAnimation = GetComponent<PlayerAnimation>();
         _spriteRenderer = GetComponentInChildren<SpriteRenderer>();
+        isClickedOnce = false;
     }
 
     // Update is called once per frame
@@ -29,17 +33,39 @@ public class Player : MonoBehaviour
         Flip(horizontalInput < 0);
         _rigid.velocity = new Vector2(horizontalInput * speedFactor, verticalInput * speedFactor);
         PlayWalkAnimation(_rigid.velocity);
-        if(Input.GetKeyDown(KeyCode.N))
+
+        /*-------------*/
+
+        if (Input.GetMouseButtonDown(0) && isClickedOnce == false)
         {
-            GameObject gameObject = new GameObject("Test");
-            gameObject.transform.Translate(count, 0, 0);
-            count++;
+            Object pal = Resources.Load("Sprites/Environments/Tilemaps/Palettes/Ground");
+            Debug.Log(pal);
+            /*
+            GameObject gameObject = new GameObject("Crop");
+            gameObject.transform.Translate(newPos);
             gameObject.AddComponent<SpriteRenderer>();
-            SpriteRenderer sprite = gameObject.GetComponent<SpriteRenderer>();
-            var sp = Resources.Load<Sprite>("characterdemo");
-            Debug.Log(sp);
-            sprite.sprite = sp;
-            sprite.sortingOrder = 10;
+            gameObject.AddComponent<Crops>();
+
+            newPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            newPos.z = 0;
+            Sprite[] sp = Resources.LoadAll<Sprite>("Sprites/Environments/Tilemaps/Palettes/Ground");
+            _tileBase = new Tile();
+            _tileBase.sprite = sp[0];
+            _tilemap.SetTile(Vector3Int.FloorToInt(newPos), _tileBase);
+            isClickedOnce = true;
+            */          
+        }
+        else if (Input.GetMouseButtonDown(0))
+        {
+            isClickedOnce = false;
+        }
+        else if (isClickedOnce)
+        {
+            Vector3 oldPos = newPos;
+            newPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            newPos.z = 0;
+            _tilemap.SetTile(Vector3Int.FloorToInt(oldPos), null);
+            _tilemap.SetTile(Vector3Int.FloorToInt(newPos), _tileBase);
         }
 
     }
